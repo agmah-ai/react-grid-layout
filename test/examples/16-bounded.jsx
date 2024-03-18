@@ -54,6 +54,10 @@ class BoundedLayout extends React.PureComponent {
         layout={this.state.layout}
         onLayoutChange={this.onLayoutChange}
         isBounded={true}
+        compactType={null}
+        preventCollision={true}
+        allowOverlap={false}
+        
         {...this.props}
       >
         {this.generateDOM()}

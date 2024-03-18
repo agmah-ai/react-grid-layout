@@ -503,9 +503,11 @@ export default class GridItem extends React.Component<Props, State> {
       const { offsetParent } = node;
 
       if (offsetParent) {
-        const { margin, rowHeight } = this.props;
+        const { margin, rowHeight, containerPadding } = this.props;
         const bottomBoundary =
-          offsetParent.clientHeight - calcGridItemWHPx(h, rowHeight, margin[1]);
+          offsetParent.clientHeight -
+          calcGridItemWHPx(h, rowHeight, margin[1]) -
+          2 * containerPadding[1];
         top = clamp(top, 0, bottomBoundary);
 
         const colWidth = calcGridColWidth(positionParams);
@@ -585,12 +587,19 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Clamping of dimensions based on resize direction
     let updatedSize = size;
+    let parentLowerBoundary = Infinity;
     if (node) {
+      const { offsetParent } = node.parentNode;
+
+      const { containerPadding } = this.props;
+      parentLowerBoundary = offsetParent.clientHeight - containerPadding[1];
+
       updatedSize = resizeItemInDirection(
         handle,
         position,
         size,
-        containerWidth
+        containerWidth,
+        parentLowerBoundary
       );
       this.setState({
         resizing: handlerName === "onResizeStop" ? null : updatedSize
