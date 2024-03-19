@@ -247,8 +247,8 @@ class ReactGridLayout extends React.Component /*:: <Props, State>*/{
             const {
               offsetParent
             } = node.parentNode;
-            let parentLowerBoundary = offsetParent.clientHeight;
-            let parentRightBoundary = offsetParent.clientWidth;
+            const parentLowerBoundary = offsetParent.clientHeight;
+            const parentRightBoundary = offsetParent.clientWidth;
 
             // adjust w && h to maximum allowed space
             let leastX = parentRightBoundary,
