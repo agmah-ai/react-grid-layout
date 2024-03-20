@@ -416,22 +416,8 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         hasCollisions = collisions.length > 0;
 
         // If we're colliding, we need adjust the placeholder.
-        if (hasCollisions) {
-          const { offsetParent } = node.parentNode;
-
-          const parentLowerBoundary = offsetParent.clientHeight;
-          const parentRightBoundary = offsetParent.clientWidth;
-
-          // adjust w && h to maximum allowed space
-          let leastX = parentRightBoundary,
-            leastY = parentLowerBoundary;
-          collisions.forEach(layoutItem => {
-            if (layoutItem.x > l.x) leastX = Math.min(leastX, layoutItem.x);
-            if (layoutItem.y > l.y) leastY = Math.min(leastY, layoutItem.y);
-          });
-
-          if (Number.isFinite(leastX)) l.w = leastX - l.x;
-          if (Number.isFinite(leastY)) l.h = leastY - l.y;
+        if (hasCollisions && preventCollision) {
+          return layout;
         }
       }
 
