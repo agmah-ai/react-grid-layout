@@ -110,8 +110,8 @@ function calcXY(positionParams /*: PositionParams*/, top /*: number*/, left /*: 
   // l - m = x(c + m)
   // (l - m) / (c + m) = x
   // x = (left - margin) / (coldWidth + margin)
-  let x = Math.round((left - margin[0]) / (colWidth + margin[0]));
-  let y = Math.round((top - margin[1]) / (rowHeight + margin[1]));
+  let x = Math.floor(left / (colWidth + margin[0]));
+  let y = Math.floor(top / (rowHeight + margin[1]));
 
   // Capping
   x = clamp(x, 0, cols - w);
