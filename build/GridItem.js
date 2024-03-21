@@ -204,6 +204,7 @@ class GridItem extends _react.default.Component /*:: <Props, State>*/{
           } = this.props;
           const bottomBoundary = offsetParent.clientHeight - (0, _calculateUtils.calcGridItemWHPx)(h, rowHeight, margin[1]) - containerPadding[1];
           top = (0, _calculateUtils.clamp)(top, 0, bottomBoundary);
+          console.log(top, bottomBoundary);
           const colWidth = (0, _calculateUtils.calcGridColWidth)(positionParams);
           const rightBoundary = containerWidth - (0, _calculateUtils.calcGridItemWHPx)(w, colWidth, margin[0]);
           left = (0, _calculateUtils.clamp)(left, 0, rightBoundary);
