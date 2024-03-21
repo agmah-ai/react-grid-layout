@@ -509,7 +509,6 @@ export default class GridItem extends React.Component<Props, State> {
           calcGridItemWHPx(h, rowHeight, margin[1]) -
           2 * containerPadding[1];
         top = clamp(top, 0, bottomBoundary);
-        console.log(top, bottomBoundary);
         const colWidth = calcGridColWidth(positionParams);
         const rightBoundary =
           containerWidth - calcGridItemWHPx(w, colWidth, margin[0]);
@@ -522,7 +521,6 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Call callback with this data
     const { x, y } = calcXY(positionParams, top, left, w, h);
-    console.log(x, y);
     return onDrag.call(this, i, x, y, {
       e,
       node,
