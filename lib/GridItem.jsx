@@ -522,6 +522,7 @@ export default class GridItem extends React.Component<Props, State> {
 
     // Call callback with this data
     const { x, y } = calcXY(positionParams, top, left, w, h);
+    console.log(x, y);
     return onDrag.call(this, i, x, y, {
       e,
       node,

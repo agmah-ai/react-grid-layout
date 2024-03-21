@@ -223,6 +223,7 @@ class GridItem extends _react.default.Component /*:: <Props, State>*/{
         x,
         y
       } = (0, _calculateUtils.calcXY)(positionParams, top, left, w, h);
+      console.log(x, y);
       return onDrag.call(this, i, x, y, {
         e,
         node,
