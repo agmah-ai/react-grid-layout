@@ -169,33 +169,36 @@ class GridItem extends _react.default.Component /*:: <Props, State>*/{
      */
     _defineProperty(this, "onDrag", (e, _ref2) => {
       let {
-        node,
-        deltaX,
-        deltaY
+        node
       } = _ref2;
       const {
-        onDrag
-      } = this.props;
-      if (!onDrag) return;
-      if (!this.state.dragging) {
-        throw new Error("onDrag called before onDragStart.");
-      }
-      let top = this.state.dragging.top + deltaY;
-      let left = this.state.dragging.left + deltaX;
-      const {
+        onDrag,
+        transformScale,
+        rowHeight,
         isBounded,
         i,
         w,
         h,
         containerWidth
       } = this.props;
+      if (!onDrag) return;
+      if (!this.state.dragging) {
+        throw new Error("onDrag called before onDragStart.");
+      }
+      const {
+        offsetParent
+      } = node;
+      if (!offsetParent) return;
+      const parentRect = offsetParent.getBoundingClientRect();
+      const layerX = e.clientX - parentRect.left;
+      const layerY = e.clientY - parentRect.top;
       const positionParams = this.getPositionParams();
+      const colWidth = (0, _calculateUtils.calcGridColWidth)(positionParams);
+      let top = layerY / transformScale - h / 2 * rowHeight;
+      let left = layerX / transformScale - w / 2 * colWidth;
 
       // Boundary calculations; keeps items within the grid
       if (isBounded) {
-        const {
-          offsetParent
-        } = node;
         if (offsetParent) {
           const {
             margin,
@@ -204,7 +207,6 @@ class GridItem extends _react.default.Component /*:: <Props, State>*/{
           } = this.props;
           const bottomBoundary = offsetParent.clientHeight - (0, _calculateUtils.calcGridItemWHPx)(h, rowHeight, margin[1]) - 2 * containerPadding[1];
           top = (0, _calculateUtils.clamp)(top, 0, bottomBoundary);
-          const colWidth = (0, _calculateUtils.calcGridColWidth)(positionParams);
           const rightBoundary = containerWidth - (0, _calculateUtils.calcGridItemWHPx)(w, colWidth, margin[0]);
           left = (0, _calculateUtils.clamp)(left, 0, rightBoundary);
         }

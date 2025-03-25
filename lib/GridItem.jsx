@@ -484,23 +484,43 @@ export default class GridItem extends React.Component<Props, State> {
    */
   onDrag: (Event, ReactDraggableCallbackData) => void = (
     e,
-    { node, deltaX, deltaY }
+    { node }
   ) => {
-    const { onDrag } = this.props;
+    const { 
+      onDrag,
+      transformScale,
+      rowHeight,
+      isBounded,
+      i,
+      w,
+      h,
+      containerWidth
+    } = this.props;
+
     if (!onDrag) return;
 
     if (!this.state.dragging) {
       throw new Error("onDrag called before onDragStart.");
     }
-    let top = this.state.dragging.top + deltaY;
-    let left = this.state.dragging.left + deltaX;
 
-    const { isBounded, i, w, h, containerWidth } = this.props;
+    const {
+      offsetParent
+    } = node;
+
+    if (!offsetParent) return;
+    const parentRect = offsetParent.getBoundingClientRect();
+
+    const layerX = e.clientX - parentRect.left;
+    const layerY = e.clientY - parentRect.top;
+
     const positionParams = this.getPositionParams();
+    const colWidth = calcGridColWidth(positionParams);
+
+    let top = (layerY / transformScale) - (h/2 * rowHeight) ;
+    let left = (layerX / transformScale) - (w/2 * colWidth);
 
     // Boundary calculations; keeps items within the grid
     if (isBounded) {
-      const { offsetParent } = node;
 
       if (offsetParent) {
         const { margin, rowHeight, containerPadding } = this.props;
@@ -509,7 +529,6 @@ export default class GridItem extends React.Component<Props, State> {
           calcGridItemWHPx(h, rowHeight, margin[1]) -
           2 * containerPadding[1];
         top = clamp(top, 0, bottomBoundary);
-        const colWidth = calcGridColWidth(positionParams);
         const rightBoundary =
           containerWidth - calcGridItemWHPx(w, colWidth, margin[0]);
         left = clamp(left, 0, rightBoundary);
